@@ -12,23 +12,15 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+right now this runs in http at localhost 3000
+the db is located at localhost 8090
+the user is example@test.com
+the password is PasswordPassword
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The purpose of this application is to conduct tests on elasticsearch instances
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+I know that I need to configure it to allow unsigned certs because elasticsearch is running with self signed certs at https://localhost:9200
 
-## Learn More
+The username and password are:
+ZWxhc3RpYzpSbWUxcG5KSkdNaWE4ZGcwZEJPbQ==
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
