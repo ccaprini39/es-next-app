@@ -1,27 +1,27 @@
-async function loadData(){
-  console.log('loadData')
-  let basicGet = await fetch('http://localhost:3000/api/index-information', {
-    method: 'GET',
-    cache: 'no-cache',
-  })
-  
-  basicGet = await basicGet.json()
-  console.log( 'basicGet', basicGet)
+import CpuInfo from "./server-components/CpuInfo";
+import IndexInfo from "./server-components/IndexInfo";
 
-  return { basicGet }
-}
-
-export default async function TestPage(){
-  const { basicGet } = await loadData()
-
+export default function TestPage() {
   return (
-    <div>
-      <h1>Test Page</h1>
+    <div
+      className="w-screen h-screen"
+    >
+      <div
+        className="w-full flex flex-row"
+      >
+        <div
+          className="w-10/12 m-5"
+        >
+          <IndexInfo />
+        </div>
+        <div
+          className="w-2/12 m-5"
+        >
+          <CpuInfo />
+        </div>
+      </div>
 
-      <p>Test page content</p>
-      <pre>
-        {JSON.stringify(basicGet, null, 2)}
-      </pre>
+
     </div>
   )
 }

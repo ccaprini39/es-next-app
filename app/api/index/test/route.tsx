@@ -2,10 +2,6 @@
 
 import { NextResponse } from "next/server"
 
-/**
- * Function that deletes all existing indices
- * @returns the response from the ES server
- */
 export async function GET( request: Request ) {
   //now lets get the list of indices
   const url = 'https://localhost:9200/_all'
@@ -21,5 +17,6 @@ export async function GET( request: Request ) {
 
   //
   const data = await response.json()
-  return NextResponse.json( data )
+  console.log( data )
+  return NextResponse.json( {message: 'hello world!!'} )
 }
