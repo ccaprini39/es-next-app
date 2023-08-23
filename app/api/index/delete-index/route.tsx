@@ -1,12 +1,13 @@
-//this is an endpoint that takes a get request and deletes all existing indices
-
 import { NextResponse } from "next/server"
 
 export async function GET( request: Request ) {
   //now lets get the list of indices
-  const url = 'https://localhost:9200/_all'
+  const requestBody = await request.json()
+  const { index } = requestBody
 
-  const response = await fetch( url , {
+
+  //now lets delete all the indices
+  const deleteIndex = await fetch( `https://localhost:9200/${index}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -14,8 +15,6 @@ export async function GET( request: Request ) {
     },
     cache: 'no-cache'
   } )
-
-  //
-  const data = await response.json()
-  return NextResponse.json( {message: 'hello world!!'} )
+  const data = deleteIndex.json()
+  return NextResponse.json( data )
 }

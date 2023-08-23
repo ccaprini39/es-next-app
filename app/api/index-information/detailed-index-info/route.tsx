@@ -46,13 +46,8 @@ export async function POST( request: Request ) {
   return NextResponse.json( response )
 }
 
-export interface DetailedIndexInformationRequest {
-  index: string
-}
 
-
-
-export interface DetailedIndexInformationResponse {
+interface DetailedIndexInformationResponse {
   'index': string
   'docs' : string
   'storeSize': string
@@ -60,7 +55,7 @@ export interface DetailedIndexInformationResponse {
   'sampleDocument': string
 }
 
-export const DefaultDetailedIndexInformationResponse : DetailedIndexInformationResponse = {
+const DefaultDetailedIndexInformationResponse : DetailedIndexInformationResponse = {
   index: 'indexName',
   docs: '0',
   storeSize: '0gb',

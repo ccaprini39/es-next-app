@@ -1,7 +1,13 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { IndexInformation } from "../api/index-information/route"
+
+interface IndexInformation {
+  'index': string
+  'docs.count': string
+  'store.size': string
+  'mapping': string
+}
 
 
 export default function IndicesPage() {
@@ -28,7 +34,6 @@ export default function IndicesPage() {
       }
       )
       const data = await response.json()
-      console.log(data)
       setIndexList(data)
       setLoading(false)
     }
@@ -36,6 +41,7 @@ export default function IndicesPage() {
   }, [value])
 
   async function handleDeleteAllIndices() {
+    console.log('deleting all indices')
     const response = await fetch('/api/index/delete-all-indices',
       {
         method: 'GET',
@@ -46,8 +52,8 @@ export default function IndicesPage() {
     toggleValue()
   }
 
-  async function handleIndex1000000Docs(){
-    for await (const item of Array(7000).keys()) {
+  async function handleIndex1000000Docs() {
+    for await (const item of Array(8000).keys()) {
       //now I want to set the current index 
       setCurr(item)
       await handleIndex1000Docs()
@@ -56,7 +62,7 @@ export default function IndicesPage() {
     toggleValue()
   }
 
-  async function handleIndex1000Docs(){
+  async function handleIndex1000Docs() {
     const response = await fetch('/api/generator',
       {
         method: 'GET',
@@ -71,7 +77,15 @@ export default function IndicesPage() {
         errors.push(item)
       }
     }
-    await sleep(10)
+  }
+
+  async function handleDeleteAllDocsInIndex() {
+    await fetch('/api/index/delete-docs-in-index', {
+      method: 'POST',
+      body: JSON.stringify({ index: 'performance_test' }),
+      cache: 'no-store'
+    })
+    toggleValue()
   }
 
   if (loading) {
@@ -94,6 +108,14 @@ export default function IndicesPage() {
         onClick={handleDeleteAllIndices}
       >
         Delete All Indices
+      </button>
+      <button
+        className="m-5 border text-sm
+        border-yellow-500 text-yellow-500 px-4 py-2 rounded-full hover:bg-yellow-500
+        hover:text-white transition-colors duration-300"
+        onClick={handleDeleteAllDocsInIndex}
+      >
+        Delete All Docs In Index
       </button>
       {curr}
       <button
@@ -186,11 +208,44 @@ function CreateIndexForm({ toggleFunction }: { toggleFunction: () => void }) {
         cache: 'no-cache'
       })
     const data = await response.json()
-    console.log(data)
     toggleFunction()
   }
   function handleVisibleToggle() {
     setVisible(!visible)
+  }
+
+  async function handleCreateTestingIndex(){
+    const indexName = 'performance_test'
+    const mapping = {
+      "mappings": {
+        "properties": {
+          "dob": {
+            "type": "rni_date",
+            "format": "yyyyMMdd"
+          },
+          "name": {
+            "type": "rni_name"
+          },
+          "ucn": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+    const response = await fetch('/api/index/create-index',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          indexName: indexName,
+          mapping: mapping
+        }),
+        cache: 'no-cache'
+      })
+    const data = await response.json()
+    toggleFunction()
   }
 
   if (!visible) {
@@ -215,6 +270,10 @@ function CreateIndexForm({ toggleFunction }: { toggleFunction: () => void }) {
         className="m-5 border text-sm"
         onClick={handleVisibleToggle}
       >hide Create Index</button>
+      <button
+        className="m-5 border text-sm"
+        onClick={handleCreateTestingIndex}
+      >Create Testing Index</button>
       <div
         className="flex flex-row"
       >

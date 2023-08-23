@@ -41,7 +41,7 @@ export async function POST( request: Request ) {
   return NextResponse.json( withMappings )
 }
 
-export interface IndexInformation {
+interface IndexInformation {
   'index': string
   'docs.count': string
   'store.size': string

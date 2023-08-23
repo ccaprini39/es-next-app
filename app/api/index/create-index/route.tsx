@@ -22,7 +22,7 @@ export async function POST ( request: Request ) {
   return NextResponse.json( data )
 }
 
-export interface IndexCreateObject {
+interface IndexCreateObject {
   indexName: string
   mapping: object
 }

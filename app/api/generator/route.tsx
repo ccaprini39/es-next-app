@@ -13,7 +13,6 @@ export async function GET(request: Request) {
     const res = await indexNDocs(1000)
     if (res.status === 200) {
       const json = await res.json()
-      console.log(json)
       response = json
     } else {
       response = { success: false }
@@ -22,6 +21,42 @@ export async function GET(request: Request) {
     console.error(error)
     response = { error: 'error' }
   }
+  return NextResponse.json(response)
+}
+
+export async function POST(request: Request) {
+  const body = await request.json()
+  const { n } = body
+  let response: any
+  try {
+    if (n < 10000){
+      const res = await indexNDocs(n)
+      if (res.status === 200) {
+        const json = await res.json()
+        response = json
+      } else {
+        response = { success: false }
+      }
+    }
+    else {
+      //divide it by 1000 and then index 10000 docs at a time
+      const numOfIterations = Math.floor(n / 10000)
+      for (let i = 0; i < numOfIterations; i++) {
+        const res = await indexNDocs(10000)
+        if (res.status === 200) {
+          const json = await res.json()
+          response = json
+        } else {
+          response = { success: false }
+        }
+      }
+    }
+  }
+  catch (error: any) {
+    console.error(error)
+    response = { error: 'error' }
+  }
+
   return NextResponse.json(response)
 }
 
@@ -124,7 +159,7 @@ const arrayOfGenders = [
   'male', 'female'
 ]
 
-export function getRandomGender() {
+function getRandomGender() {
   return arrayOfGenders[Math.floor(Math.random() * arrayOfGenders.length)]
 }
 
@@ -133,19 +168,19 @@ function getRandomGivenName(gender: string) {
   else return getRandomFemaleName()
 }
 
-export function getRandomMaleName() {
+function getRandomMaleName() {
   return arrayOfCommonMaleNames[Math.floor(Math.random() * lengthOfCommonMaleNames)]
 }
 
-export function getRandomFemaleName() {
+function getRandomFemaleName() {
   return arrayOfCommonFemaleNames[Math.floor(Math.random() * lengthOfCommonFemaleNames)]
 }
 
-export function getRandomLastName() {
+function getRandomLastName() {
   return arrayOfCommonLastNames[Math.floor(Math.random() * lengthOfCommonLastNames)]
 }
 
-export function getRandomName() {
+function getRandomName() {
   const gender = getRandomGender()
   const numOfNames = generateRandomNumber(1, 3)
   let name = ''
@@ -156,7 +191,7 @@ export function getRandomName() {
   return name
 }
 
-export function generateRandomNumber(min: number, max: number) {
+function generateRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min)
 }
 
@@ -165,7 +200,7 @@ export function generateRandomNumber(min: number, max: number) {
 //then a random month between 1 and 12
 //then a random day between 1 and 28, 29, 30, or 31 depending on the month
 //then I will return the date in the format yyyy-MM-dd
-export function generateRandomDate() {
+function generateRandomDate() {
   const year = generateRandomNumber(1900, 2021)
   let month: number = generateRandomNumber(1, 13)
   let monthString : string = month.toString()
@@ -177,7 +212,7 @@ export function generateRandomDate() {
   return `${year}${monthString}${day}`
 }
 
-export function getRandomDayForMonth(month: number) {
+function getRandomDayForMonth(month: number) {
   if (month === 2) return generateRandomNumber(1, 29)
   else if (month === 4 || month === 6 || month === 9 || month === 11) return generateRandomNumber(1, 31)
   else return generateRandomNumber(1, 32)
@@ -187,7 +222,7 @@ export function getRandomDayForMonth(month: number) {
  * function for generating a uuid
  * @returns a uuid
  */
-export function generateUuid() {
+function generateUuid() {
   return crypto.randomBytes(16).toString("hex")
 }
 

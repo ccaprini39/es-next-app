@@ -1,7 +1,21 @@
 'use client'
 
-import { DefaultDetailedIndexInformationResponse, DetailedIndexInformationResponse } from "@/app/api/index-information/detailed-index-info/route"
 import { useEffect, useState } from "react"
+
+interface DetailedIndexInformationResponse {
+  'index': string
+  'docs' : string
+  'storeSize': string
+  'mapping': string
+  'sampleDocument': string
+}
+const DefaultDetailedIndexInformationResponse : DetailedIndexInformationResponse = {
+  index: 'indexName',
+  docs: '0',
+  storeSize: '0gb',
+  mapping: '{"mapping": "not found"}',
+  sampleDocument: '{"sampleDocument": "not found"}'
+}
 
 export default function IndexInfo() {
 
@@ -22,8 +36,18 @@ export default function IndexInfo() {
         body: JSON.stringify({ index: 'performance_test' }),
         cache: 'no-store'
       })
-      const data = await response.json()
-      setIndexInfo(data)
+      if(response.status !== 200 ) {
+        console.log('error fetching detailed index info')
+        return
+      }
+      try {
+        const data = await response.json()
+        setIndexInfo(data)
+      } catch (error) {
+        console.log('error parsing json')
+        setIndexInfo(DefaultDetailedIndexInformationResponse)
+        return
+      }
     }
     fetchDetailedInfo()
   }, [value])

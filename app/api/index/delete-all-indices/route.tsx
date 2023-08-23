@@ -1,7 +1,13 @@
 //this is an endpoint that takes a get request and deletes all existing indices
 
 import { NextResponse } from "next/server"
-import { IndexInformation } from "../../index-information/route"
+
+interface IndexInformation {
+  'index': string
+  'docs.count': string
+  'store.size': string
+  'mapping': string
+}
 
 /**
  * Function that deletes all existing indices
@@ -37,6 +43,5 @@ export async function GET( request: Request ) {
   //
   const data = await deleteAllIndices.json()
   
-  console.log( data )
   return NextResponse.json( data )
 }
