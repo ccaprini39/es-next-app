@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "properties": {
+      "dob": {
+        "type": "rni_date",
+        "format": "yyyyMMdd"
+      },
+      "name": {
+        "type": "rni_name"
+      },
+      "ucn": {
+        "type": "keyword"
+      }
+    }
+  }
+}

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# chmod +x average-ten-queries.sh
+# ./average-ten-queries.sh
+
 # Define variables
 url="https://ec2-3-141-218-94.us-east-2.compute.amazonaws.com:9200/performance_test/_search"
 auth="Authorization: Basic ZWxhc3RpYzpSbWUxcG5KSkdNaWE4ZGcwZEJPbQ=="
@@ -10,7 +13,15 @@ echo "Running 10 queries..."
 declare -a took_values
 for i in {1..10}; do
   # Generate random name and dob
-  name=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+  # Define arrays of first, middle, and last names
+  first_names=("Emma" "Olivia" "Ava" "Isabella" "Sophia" "Mia" "Charlotte" "Amelia" "Harper" "Evelyn" "Abigail" "Emily" "Elizabeth" "Mila" "Ella" "Avery" "Sofia" "Camila" "Aria" "Scarlett")
+  last_names=("Smith" "Johnson" "Williams" "Jones" "Brown" "Garcia" "Miller" "Davis" "Rodriguez" "Martinez" "Hernandez" "Lopez" "Gonzalez" "Perez" "Taylor" "Anderson" "Wilson" "Moore" "Jackson" "Martin")
+
+  # Generate random name
+  first_name=${first_names[$RANDOM % ${#first_names[@]} ]}
+  middle_name=${first_names[$RANDOM % ${#first_names[@]} ]}
+  last_name=${last_names[$RANDOM % ${#last_names[@]} ]}
+  name="$first_name $middle_name $last_name"
 
   # Generate random dob with constraints
   year=$(shuf -i 1900-2023 -n 1)

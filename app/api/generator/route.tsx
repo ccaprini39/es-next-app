@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   const { n } = body
   let response: any
   try {
-    if (n < 10000){
+    if (n < 10000) {
       const res = await indexNDocs(n)
       if (res.status === 200) {
         const json = await res.json()
@@ -203,7 +203,7 @@ function generateRandomNumber(min: number, max: number) {
 function generateRandomDate() {
   const year = generateRandomNumber(1900, 2021)
   let month: number = generateRandomNumber(1, 13)
-  let monthString : string = month.toString()
+  let monthString: string = month.toString()
   //need to make sure that the number is expressed as a string with two digits
   if (month < 10) monthString = '0' + month
   let day: string | number = getRandomDayForMonth(month)
@@ -254,7 +254,7 @@ async function indexNDocs(n: number) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization' : 'Basic ' + process.env.ES_AUTH
+      'Authorization': 'Basic ' + process.env.ES_AUTH
     },
     body: bulkString,
     cache: 'no-cache'
@@ -262,3 +262,15 @@ async function indexNDocs(n: number) {
   return res
 }
 
+const curl = `
+curl -X POST "localhost:9200/_bulk?pretty" -H 'Content-Type: application/json' -d'
+{ "index" : { "_index" : "test", "_id" : "1" } }
+{ "field1" : "value1" }
+{ "delete" : { "_index" : "test", "_id" : "2" } }
+{ "create" : { "_index" : "test", "_id" : "3" } }
+{ "field1" : "value3" }
+{ "update" : {"_id" : "1", "_index" : "test"} }
+{ "doc" : {"field2" : "value2"} }
+'
+
+`

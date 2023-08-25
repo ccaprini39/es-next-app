@@ -134,3 +134,15 @@ const example3 =
     }
   }
 }
+
+const getVerboseRam = 'https://ec2-3-141-218-94.us-east-2.compute.amazonaws.com:9200/_cat/nodes?h=ram*&v&pretty'
+const getVerboseRamWithNodeName = 'https://ec2-3-141-218-94.us-east-2.compute.amazonaws.com:9200/_cat/nodes?h=ram*&v&pretty&h=n'
+const getDocCount = 'https://ec2-3-141-218-94.us-east-2.compute.amazonaws.com:9200/_cat/indices?h=docs.count&v&pretty'
+
+const deleteOneDoc = {
+  "query": {
+    "match_all": {}
+  }
+}
+
+

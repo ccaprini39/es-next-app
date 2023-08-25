@@ -1,0 +1,8 @@
+
+indexing to 1000 docs and running queries
+11.15 ms
+indexing to 10,000 docs and running queries
+30.54 ms
+indexing to 100,000 docs and running queries
+92.17 ms
+indexing to 1,000,000 docs and running queries
